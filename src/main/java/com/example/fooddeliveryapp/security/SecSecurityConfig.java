@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapp.security;
 
+import com.example.fooddeliveryapp.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +23,9 @@ public class SecSecurityConfig {
 
     @Autowired
     private CustomAuthenticationProvider authProvider;
+
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -49,8 +54,11 @@ public class SecSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/signin").permitAll()
+                .antMatchers("/refresh-token").permitAll()
                 .antMatchers("/signin/test").authenticated()
                 .anyRequest().authenticated();
+        // Config TokenFilter trước
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
