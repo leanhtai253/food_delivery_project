@@ -4,6 +4,7 @@ import com.example.fooddeliveryapp.jwt.JwtTokenHelper;
 import com.example.fooddeliveryapp.payload.request.SignInRequest;
 import com.example.fooddeliveryapp.payload.request.TokenRequest;
 import com.example.fooddeliveryapp.payload.response.ResponseData;
+import com.example.fooddeliveryapp.payload.response.TokenResponseData;
 import com.example.fooddeliveryapp.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,9 @@ public class LoginController {
     @Autowired
     JwtTokenHelper jwtTokenHelper;
 
+    private long tokenDuration = 8 * 60 * 60 * 1000;
+    private long rTokenDuration = 80 * 60 * 60 * 1000;
+
     @PostMapping("")
     public ResponseEntity<?> signin(@RequestBody SignInRequest request, HttpServletResponse resp) {
         UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(
@@ -41,8 +45,13 @@ public class LoginController {
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
 
-        String token = jwtTokenHelper.generateToken(request.getUsername());
+        String token = jwtTokenHelper.generateToken(request.getUsername(), "token", tokenDuration);
+        String refreshToken = jwtTokenHelper.generateToken(request.getUsername()+"_refresh","refresh",rTokenDuration);
         String tokenDecoded = jwtTokenHelper.decode(token);
+
+        TokenResponseData tokenData = new TokenResponseData();
+        tokenData.setToken(token);
+        tokenData.setRefreshToken(refreshToken);
 
         Cookie cookie = new Cookie("tokenSignin", token);
         resp.addCookie(cookie);
@@ -51,7 +60,7 @@ public class LoginController {
         if (auth != null) {
             responseData.setSuccess(true);
         }
-        responseData.setData(token);
+        responseData.setData(tokenData);
         responseData.setDesc(tokenDecoded);
         responseData.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(responseData, HttpStatus.OK);
