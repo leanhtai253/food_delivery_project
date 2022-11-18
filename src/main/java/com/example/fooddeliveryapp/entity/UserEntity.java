@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapp.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name="user")
 public class UserEntity {
@@ -34,6 +35,12 @@ public class UserEntity {
 
     @Column(name="is_active")
     private boolean isActive;
+
+    @OneToMany(mappedBy = "user")
+    private Set<OrderEntity> orders;
+
+    @OneToMany(mappedBy = "user")
+    private Set<FoodReviewEntity> reviews;
 
     public int getId() {
         return id;
@@ -113,5 +120,21 @@ public class UserEntity {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Set<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<OrderEntity> orders) {
+        this.orders = orders;
+    }
+
+    public Set<FoodReviewEntity> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<FoodReviewEntity> reviews) {
+        this.reviews = reviews;
     }
 }
