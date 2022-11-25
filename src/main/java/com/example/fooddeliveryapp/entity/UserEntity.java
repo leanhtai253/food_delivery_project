@@ -42,6 +42,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private Set<FoodReviewEntity> reviews;
 
+    @OneToOne(mappedBy = "user")
+    UserDetailEntity userDetail;
+
     public int getId() {
         return id;
     }
@@ -136,5 +139,13 @@ public class UserEntity {
 
     public void setReviews(Set<FoodReviewEntity> reviews) {
         this.reviews = reviews;
+    }
+
+    public UserDetailEntity getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetailEntity userDetail) {
+        this.userDetail = userDetail;
     }
 }

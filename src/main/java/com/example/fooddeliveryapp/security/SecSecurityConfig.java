@@ -55,6 +55,7 @@ public class SecSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/refresh-token").permitAll()
+                .antMatchers("/file/downloadFile/**").permitAll()
                 .antMatchers("/signin/test").authenticated()
                 .anyRequest().authenticated();
         // Config TokenFilter trước
