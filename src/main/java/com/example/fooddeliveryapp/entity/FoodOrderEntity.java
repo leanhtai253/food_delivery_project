@@ -1,20 +1,30 @@
 package com.example.fooddeliveryapp.entity;
 
+import com.example.fooddeliveryapp.entity.Id.FoodOrderId;
+
 import javax.persistence.*;
 
 @Entity(name="FoodOrder")
 @Table(name="food_order")
+@IdClass(FoodOrderId.class)
 public class FoodOrderEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int id;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name="id_food")
+    private int idFood;
+
+    @Id
+    @Column(name="id_order")
+    private int idOrder;
 
     @ManyToOne
-    @JoinColumn(name="id_order")
+    @JoinColumn(name="id_order", updatable = false, insertable = false)
     private OrderEntity order;
 
     @ManyToOne
-    @JoinColumn(name="id_food")
+    @JoinColumn(name="id_food", updatable = false, insertable = false)
     private FoodEntity food;
 
     @Column(name="price")
@@ -23,15 +33,20 @@ public class FoodOrderEntity {
     @Column(name="quality")
     private int quality;
 
-    @Column(name = "id_promo")
-    private int promoId;
-
-    public int getId() {
-        return id;
+    public int getIdFood() {
+        return idFood;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdFood(int idFood) {
+        this.idFood = idFood;
+    }
+
+    public int getIdOrder() {
+        return idOrder;
+    }
+
+    public void setIdOrder(int idOrder) {
+        this.idOrder = idOrder;
     }
 
     public OrderEntity getOrder() {
@@ -66,11 +81,4 @@ public class FoodOrderEntity {
         this.quality = quality;
     }
 
-    public int getPromoId() {
-        return promoId;
-    }
-
-    public void setPromoId(int promoId) {
-        this.promoId = promoId;
-    }
 }
