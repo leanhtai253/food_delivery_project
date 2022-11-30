@@ -18,7 +18,7 @@ public class CategoryController {
     CategoryService categoryService;
     @GetMapping("")
     public ResponseEntity<?> getExploreCategory() {
-        List<CategoryEntity> categoryEntities = categoryService.findTop6();
+        List<CategoryEntity> categoryEntities = categoryService.getExplorer();
         return new ResponseEntity<>(categoryEntities, HttpStatus.OK);
     }
 }
