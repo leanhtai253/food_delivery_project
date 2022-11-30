@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
-    @Query(value = "select c from category c order by c.id DESC limit 6", nativeQuery = true)
-    public List<CategoryEntity> findTop6();
+    @Query(value = "select c.* from category as c order by c.id DESC limit 6", nativeQuery = true)
+    public List<CategoryEntity> getExplorer();
 }

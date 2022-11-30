@@ -12,7 +12,7 @@ public class CategoryServiceImp implements CategoryService{
     @Autowired
     CategoryRepository categoryRepository;
     @Override
-    public List<CategoryEntity> findTop6() {
-        return categoryRepository.findTop6();
+    public List<CategoryEntity> getExplorer() {
+        return categoryRepository.getExplorer();
     }
 }

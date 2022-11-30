@@ -1,5 +1,7 @@
 package com.example.fooddeliveryapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity(name="RestaurantReview")
@@ -11,6 +13,7 @@ public class RestaurantReviewEntity {
 
     @ManyToOne
     @JoinColumn(name="id_restaurant")
+    @JsonIgnore
     private RestaurantEntity restaurant;
 
     @Column(name="content")
